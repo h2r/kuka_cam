@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+	<include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="cam_1"/>
+        <arg name="serial_no" value="$(env CAM_1_SERIAL)" />
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    </include>
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="cam_2"/>
+        <arg name="serial_no" value="$(env CAM_2_SERIAL)" />
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    </include>
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="cam_3"/>
+        <arg name="serial_no" value="$(env CAM_3_SERIAL)" />
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    </include>
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="cam_4"/>
+        <arg name="serial_no" value="$(env CAM_4_SERIAL)" />
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    </include>
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="cam_5"/>
+        <arg name="serial_no" value="$(env CAM_5_SERIAL)" />
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    </include>
+
+    <node pkg="tf" type="static_transform_publisher" name="cam_1_cam_2" args="2 0 0 0 0 0 /cam_1_link /cam_2_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="cam_2_cam_3" args="2 0 0 0 0 0 /cam_2_link /cam_3_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="cam_3_cam_4" args="2 0 0 0 0 0 /cam_3_link /cam_4_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="cam_4_cam_5" args="2 0 0 0 0 0 /cam_4_link /cam_5_link 100"/>
+    
+</launch>
+
+
