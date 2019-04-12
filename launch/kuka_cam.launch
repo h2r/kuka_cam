@@ -1,36 +1,23 @@
 <?xml version="1.0"?>
 <launch>
-	<include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="cam_1"/>
-        <arg name="serial_no" value="$(env CAM_1_SERIAL)" />
-        <arg name="filters" value="spatial,temporal,pointcloud"/>
+	<arg name="cam_1" default="on"/>
+    <arg name="cam_2" default="on"/>
+    <arg name="cam_3" default="on"/>
+    <arg name="cam_4" default="on"/>
+    <arg name="cam_5" default="on"/>
+    <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_1 == 'on')">
+        <arg name="cam_num" value="1"/>
     </include>
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="cam_2"/>
-        <arg name="serial_no" value="$(env CAM_2_SERIAL)" />
-        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_2 == 'on')">
+        <arg name="cam_num" value="2"/>
     </include>
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="cam_3"/>
-        <arg name="serial_no" value="$(env CAM_3_SERIAL)" />
-        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_3 == 'on')">
+        <arg name="cam_num" value="3"/>
     </include>
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="cam_4"/>
-        <arg name="serial_no" value="$(env CAM_4_SERIAL)" />
-        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_4 == 'on')">
+        <arg name="cam_num" value="4"/>
     </include>
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="camera" value="cam_5"/>
-        <arg name="serial_no" value="$(env CAM_5_SERIAL)" />
-        <arg name="filters" value="spatial,temporal,pointcloud"/>
+    <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_5 == 'on')">
+        <arg name="cam_num" value="5"/>
     </include>
-
-    <node pkg="tf" type="static_transform_publisher" name="cam_1_cam_2" args="2 0 0 0 0 0 /cam_1_link /cam_2_link 100"/>
-    <node pkg="tf" type="static_transform_publisher" name="cam_2_cam_3" args="2 0 0 0 0 0 /cam_2_link /cam_3_link 100"/>
-    <node pkg="tf" type="static_transform_publisher" name="cam_3_cam_4" args="2 0 0 0 0 0 /cam_3_link /cam_4_link 100"/>
-    <node pkg="tf" type="static_transform_publisher" name="cam_4_cam_5" args="2 0 0 0 0 0 /cam_4_link /cam_5_link 100"/>
-    
 </launch>
-
-
