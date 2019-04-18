@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="kuka_cam" type="merger_node" name="my_merger_node" output="screen"/>
+</launch>

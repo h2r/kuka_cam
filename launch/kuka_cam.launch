@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="cam_1" default="on"/>
+    <arg name="cam_1" default="on"/>
     <arg name="cam_2" default="on"/>
     <arg name="cam_3" default="on"/>
     <arg name="cam_4" default="on"/>
@@ -20,4 +20,10 @@
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_5 == 'on')">
         <arg name="cam_num" value="5"/>
     </include>
+
+    <param name="cam_1_on" type="bool" value="$(eval cam_1 == 'on')" />
+    <param name="cam_2_on" type="bool" value="$(eval cam_2 == 'on')" />
+    <param name="cam_3_on" type="bool" value="$(eval cam_3 == 'on')" />
+    <param name="cam_4_on" type="bool" value="$(eval cam_4 == 'on')" />
+    <param name="cam_5_on" type="bool" value="$(eval cam_5 == 'on')" />
 </launch>
