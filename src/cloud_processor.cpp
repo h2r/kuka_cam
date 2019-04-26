@@ -5,11 +5,22 @@ namespace cloud_processor
   CloudProcessor::CloudProcessor(int max_deque_size, int num_clouds_to_avg){
     max_deque_size_ = max_deque_size;
     num_clouds_to_avg_ = num_clouds_to_avg;
+    if(num_clouds_to_avg_ > max_deque_size_)
+    {
+      max_deque_size_ = num_clouds_to_avg_;
+      ROS_WARN_STREAM("Max deque size smaller than number of clouds to average, setting max_deque_size_ to " << num_clouds_to_avg_ << std::endl);
+    }
   }
   void CloudProcessor::addCloud(const sensor_msgs::PointCloud2ConstPtr& msg)
   {
-    ROS_INFO_STREAM(msg->header.stamp);
-    ROS_INFO_STREAM(msg->header.frame_id << std::endl); 
+    std::string camera_name = msg->header.frame_id;
+    double timestamp = msg->header.stamp.toSec();
+    
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >(new pcl::PointCloud<pcl::PointXYZRGB>); 
+    pcl::fromROSMsg(*msg, *cloud);
+
+    ROS_INFO_STREAM(std::setprecision(20) << timestamp << std::endl);
+    ROS_INFO_STREAM(camera_name << std::endl);
   }
   void CloudProcessor::combineClouds(){
 

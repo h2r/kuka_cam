@@ -10,6 +10,7 @@ project(kuka_cam)
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs message_filters)
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
+find_package(VTK REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -31,6 +32,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
+  ${VTK_INCLUDE_DIRS}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
@@ -42,7 +44,7 @@ add_library(${PROJECT_NAME}
 )
 
 add_executable(merger_node src/merger_node.cpp)
-target_link_libraries(merger_node ${catkin_LIBRARIES})
+target_link_libraries(merger_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

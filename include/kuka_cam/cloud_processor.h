@@ -11,14 +11,16 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
+#include <boost/shared_ptr.hpp>
+
 #include <Eigen/Dense>
 
 namespace cloud_processor
 {
   class CloudProcessor 
   {
-    CloudProcessor(int max_deque_size, int num_clouds_to_avg);
   public:
+    CloudProcessor(int max_deque_size, int num_clouds_to_avg);
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
     void combineClouds();
     void filterWorkspace();
@@ -30,7 +32,7 @@ namespace cloud_processor
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr getCombinedClouds(); 
 
   private:
-    std::map<std::string, std::deque<pcl::PointCloud<pcl::PointXYZRGB>::Ptr > > cloud_map_;
+    std::map<std::string, std::deque<std::pair<pcl::PointCloud<pcl::PointXYZRGB>::Ptr, double> > > cloud_map_;
     std::map<std::string, Eigen::Matrix4d> tf_map_;
     int max_deque_size_;
     int num_clouds_to_avg_;
