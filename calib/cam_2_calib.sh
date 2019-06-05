@@ -4,11 +4,12 @@
 #0.992977 -0.445964 0.806787 0.891852 0.208172 -0.373303 -0.148016
 #Inverse:
 #0.0722066 -0.308348 1.31738 0.891852 0.208172 -0.373303 0.148016
-export cam_2_x_pos=0.0722066
-export cam_2_y_pos=-0.308348
-export cam_2_z_pos=1.31738
+
+export cam_2_x_pos=0.992977
+export cam_2_y_pos=-0.445964
+export cam_2_z_pos=0.806787
 # Rotation
 export cam_2_x_rot=0.891852
 export cam_2_y_rot=0.208172
 export cam_2_z_rot=-0.373303
-export cam_2_w_rot=0.148016
+export cam_2_w_rot=-0.148016
