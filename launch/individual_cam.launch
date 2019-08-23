@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 	<arg name="cam_num" default="1"/>
+	<arg name="load_tf" default="true"/>
 	<include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="cam_$(arg cam_num)"/>
         <!--Kinda messy (especially the whole environment variable thing), but the cleanest thing I could come up with to get args in a roslaunch-->
@@ -9,7 +10,7 @@
         <arg name="filters" value="pointcloud"/> <!-- spatial,temporal,pointcloud"/> -->
     </include>
     <!--static_transform_publisher x y z qx qy qz qw frame_id child_frame_id period_in_ms-->
-    <node pkg="tf" type="static_transform_publisher" name="tf_pub_cam_$(arg cam_num)"
+    <node pkg="tf" type="static_transform_publisher" name="tf_pub_cam_$(arg cam_num)" if="$(eval arg('load_tf'))"
     	  args= "$(eval
     	    env('cam_' + str(cam_num) + '_x_pos') + ' ' +
     	    env('cam_' + str(cam_num) + '_y_pos') + ' ' +
@@ -19,5 +20,7 @@
     	    env('cam_' + str(cam_num) + '_z_rot') + ' ' +
     	    env('cam_' + str(cam_num) + '_w_rot') + ' ' +
     	    '/world /cam_' + str(cam_num) + '_link 100'
-          )"/>
+          )"
+          
+          />
 </launch>
