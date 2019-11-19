@@ -16,7 +16,7 @@
     </include>
     <!--static_transform_publisher x y z qx qy qz qw frame_id child_frame_id period_in_ms-->
     <node pkg="tf" type="static_transform_publisher" name="tf_pub_cam_$(arg cam_num)" if="$(eval arg('load_tf'))"
-          args= "$(eval
+        args= "$(eval
             env('cam_' + str(cam_num) + '_x_pos') + ' ' +
             env('cam_' + str(cam_num) + '_y_pos') + ' ' +
             env('cam_' + str(cam_num) + '_z_pos') + ' ' +
@@ -25,7 +25,7 @@
             env('cam_' + str(cam_num) + '_z_rot') + ' ' +
             env('cam_' + str(cam_num) + '_w_rot') + ' ' +
             '/base_cam_link /cam_' + str(cam_num) + '_link 100'
-          )"
+        )"
           
-          />
+    />
 </launch>
