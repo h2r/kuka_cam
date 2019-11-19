@@ -9,3 +9,4 @@ source $KUKA_WS_PATH/src/kuka_brown/kuka_cam/calib/cam_2_calib.sh
 source $KUKA_WS_PATH/src/kuka_brown/kuka_cam/calib/cam_3_calib.sh
 source $KUKA_WS_PATH/src/kuka_brown/kuka_cam/calib/cam_4_calib.sh
 source $KUKA_WS_PATH/src/kuka_brown/kuka_cam/calib/cam_5_calib.sh
+source $KUKA_WS_PATH/src/kuka_brown/kuka_cam/calib/base_cam_calib.sh
