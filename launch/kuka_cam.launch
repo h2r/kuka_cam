@@ -27,6 +27,21 @@
         <arg name="calib_mode" value="$(arg calib_mode)"/>
     </include>
 
+    <!-- Since all cameras are calibrated to a base camera, -->
+    <node pkg="tf" type="static_transform_publisher" name="tf_pub_base_cam_frame"
+          args= "$(eval
+            env('base_cam_x_pos') + ' ' +
+            env('base_cam_y_pos') + ' ' +
+            env('base_cam_z_pos') + ' ' +
+            env('base_cam_x_rot') + ' ' +
+            env('base_cam_y_rot') + ' ' +
+            env('base_cam_z_rot') + ' ' +
+            env('base_cam_w_rot') + ' ' +
+            '/world /base_cam_link 100'
+          )"
+
+          />
+
     <param name="cam_1_on" type="bool" value="$(eval cam_1 == 'on')" />
     <param name="cam_2_on" type="bool" value="$(eval cam_2 == 'on')" />
     <param name="cam_3_on" type="bool" value="$(eval cam_3 == 'on')" />
