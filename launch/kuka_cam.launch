@@ -6,25 +6,31 @@
     <arg name="cam_4" default="on"/>
     <arg name="cam_5" default="on"/>
     <arg name="calib_mode" default="false"/>
+    <arg name="high_res_color" default="false"/>
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_1 == 'on')">
         <arg name="cam_num" value="1"/>
         <arg name="calib_mode" value="$(arg calib_mode)"/>
+        <arg name="high_res_color" value="$(arg high_res_color)"/>
     </include>
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_2 == 'on')">
         <arg name="cam_num" value="2"/>
         <arg name="calib_mode" value="$(arg calib_mode)"/>
+        <arg name="high_res_color" value="$(arg high_res_color)"/>
     </include>
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_3 == 'on')">
         <arg name="cam_num" value="3"/>
         <arg name="calib_mode" value="$(arg calib_mode)"/>
+        <arg name="high_res_color" value="$(arg high_res_color)"/>
     </include>
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_4 == 'on')">
         <arg name="cam_num" value="4"/>
         <arg name="calib_mode" value="$(arg calib_mode)"/>
+        <arg name="high_res_color" value="$(arg high_res_color)"/>
     </include>
     <include file="$(find kuka_cam)/launch/individual_cam.launch" if="$(eval cam_5 == 'on')">
         <arg name="cam_num" value="5"/>
         <arg name="calib_mode" value="$(arg calib_mode)"/>
+        <arg name="high_res_color" value="$(arg high_res_color)"/>
     </include>
 
     <!-- Since all cameras are calibrated to a base camera, -->
