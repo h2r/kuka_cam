@@ -4,12 +4,14 @@
     <arg name="load_tf" default="true"/>
     <arg name="calib_mode" default="false"/>
     <arg name="high_res_color" default="false"/>
+    <arg name="align_depth" default="false"/>
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
         <arg name="camera" value="cam_$(arg cam_num)"/>
         <!--Kinda messy (especially the whole environment variable thing), but the cleanest thing I could come up with to get args in a roslaunch-->
         <!--Can't use a .yaml because we need to access the values here-->
         <arg name="serial_no" value="$(eval env('CAM_' + str(cam_num) + '_SERIAL'))" />
         <arg name="filters" value="pointcloud"/> <!-- spatial,temporal,pointcloud"/> -->
+        <arg name="align_depth" value="$(arg align_depth)"/>
         <arg name="enable_depth" value="false" if="$(arg calib_mode)"/>
         <arg name="enable_infra1" value="false" if="$(arg calib_mode)"/>
         <arg name="enable_infra2" value="false" if="$(arg calib_mode)"/>
