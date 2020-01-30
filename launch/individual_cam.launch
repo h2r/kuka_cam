@@ -32,6 +32,5 @@
             env('cam_' + str(cam_num) + '_w_rot') + ' ' +
             '/base_cam_link /cam_' + str(cam_num) + '_link 100'
         )"
-          
     />
 </launch>
