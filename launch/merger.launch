@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="source_list" default="[ /cam_1/depth/color/points, /cam_2/depth/color/points, /cam_3/depth/color/points, /cam_4/depth/color/points, /cam_5/depth/color/points ]"/>
     <node pkg="kuka_cam" type="merger_node" name="my_merger_node" output="screen"/>
+    <!-- <param name="pointcloud_topic_names" subst_value="True" value="$(arg source_list)" /> -->
+    <rosparam param="pointcloud_topic_names" subst_value="True">$(arg source_list)</rosparam>
 </launch>

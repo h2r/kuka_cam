@@ -13,14 +13,17 @@ namespace cloud_processor
   }
   void CloudProcessor::addCloud(const sensor_msgs::PointCloud2ConstPtr& msg)
   {
+
     std::string camera_name = msg->header.frame_id;
     double timestamp = msg->header.stamp.toSec();
-    
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >(new pcl::PointCloud<pcl::PointXYZRGB>); 
+
+    // TODO: fix warning "failed to field matching field rgb."
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::fromROSMsg(*msg, *cloud);
 
     ROS_INFO_STREAM(std::setprecision(20) << timestamp << std::endl);
     ROS_INFO_STREAM(camera_name << std::endl);
+
   }
   void CloudProcessor::combineClouds(){
 
@@ -45,5 +48,5 @@ namespace cloud_processor
   }
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr CloudProcessor::getCombinedClouds(){
     return combined_cloud_;
-  } 
+  }
 }
