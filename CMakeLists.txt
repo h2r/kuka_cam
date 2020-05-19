@@ -7,7 +7,7 @@ project(kuka_cam)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs message_filters)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs message_filters tf)
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
 find_package(VTK REQUIRED)
@@ -18,7 +18,7 @@ find_package(VTK REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES kuka_cam
-  DEPENDS system_lib
+  DEPENDS system_lib tf
 )
 
 ###########
@@ -42,6 +42,7 @@ add_definitions(${PCL_DEFINITIONS})
 add_library(${PROJECT_NAME}
    src/cloud_processor.cpp
 )
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(merger_node src/merger_node.cpp)
 target_link_libraries(merger_node ${catkin_LIBRARIES} ${PROJECT_NAME} ${PCL_LIBRARIES} ${VTK_LIBRARIES})
