@@ -17,7 +17,7 @@
 
 namespace cloud_processor
 {
-  class CloudProcessor 
+  class CloudProcessor
   {
   public:
     CloudProcessor(int max_deque_size, int num_clouds_to_avg);
@@ -29,14 +29,14 @@ namespace cloud_processor
     void estimateNormals();
     void filterOutliers();
     void publishCombined();
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr getCombinedClouds(); 
+    pcl::PointCloud<pcl::PointXYZ>::Ptr getCombinedClouds();
 
   private:
-    std::map<std::string, std::deque<std::pair<pcl::PointCloud<pcl::PointXYZRGB>::Ptr, double> > > cloud_map_;
+    std::map<std::string, std::deque<std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, double> > > cloud_map_;
     std::map<std::string, Eigen::Matrix4d> tf_map_;
     int max_deque_size_;
     int num_clouds_to_avg_;
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr combined_cloud_;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr combined_cloud_;
   };
 }
 

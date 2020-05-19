@@ -18,7 +18,7 @@ namespace cloud_processor
     double timestamp = msg->header.stamp.toSec();
 
     // TODO: fix warning "failed to field matching field rgb."
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >(new pcl::PointCloud<pcl::PointXYZRGB>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::fromROSMsg(*msg, *cloud);
 
     ROS_INFO_STREAM(std::setprecision(20) << timestamp << std::endl);
@@ -46,7 +46,7 @@ namespace cloud_processor
   void CloudProcessor::publishCombined(){
 
   }
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr CloudProcessor::getCombinedClouds(){
+  pcl::PointCloud<pcl::PointXYZ>::Ptr CloudProcessor::getCombinedClouds(){
     return combined_cloud_;
   }
 }
