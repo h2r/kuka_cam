@@ -33,6 +33,9 @@ int main(int argc, char **argv)
     subscribers.push_back(nh.subscribe(topic_names[i], 10, &cloud_processor::CloudProcessor::addCloud, &cp));
   }
 
+  // cp.combined_cloud_publisher = nh.advertise<sensor_msgs::PointCloud2>("/cloud_stitched", 1);
+  cp.combined_cloud_publisher = nh.advertise<pcl::PointCloud<pcl::PointXYZ>>("/cloud_stitched", 1);
+
   ros::spin();
   return 0;
 }
