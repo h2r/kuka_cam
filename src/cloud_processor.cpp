@@ -77,13 +77,6 @@ namespace cloud_processor
       cloud_map_[camera_name].pop_front();
     }
 
-    // publish combined cloud if appropriate
-    if ( (msg->header.stamp - last_combined_pub_time_).toSec() >= 1.0/combined_pub_freq_ ){
-      last_combined_pub_time_ = msg->header.stamp;
-      combineClouds();
-      publishCombined();
-    }
-
     // ROS_INFO_STREAM("----------");
     // ROS_INFO_STREAM(std::setprecision(20) << timestamp << std::endl);
     // ROS_INFO_STREAM(camera_name << std::endl);
@@ -127,7 +120,11 @@ namespace cloud_processor
   void CloudProcessor::filterOutliers(){
 
   }
-  void CloudProcessor::publishCombined(){
+  void CloudProcessor::publishCombined(const ros::TimerEvent& event){
+
+    // TODO: is this the right place for this?
+    combineClouds();
+
     combined_cloud_->header.frame_id="world";
     combined_cloud_->header.stamp= last_combined_pub_time_.toSec();
     combined_cloud_publisher.publish(combined_cloud_);

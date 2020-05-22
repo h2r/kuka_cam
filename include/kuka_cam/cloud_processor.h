@@ -33,9 +33,8 @@ namespace cloud_processor
     void downsample();
     void estimateNormals();
     void filterOutliers();
-    void publishCombined();
+    void publishCombined(const ros::TimerEvent& event);
     pcl::PointCloud<pcl::PointXYZ>::Ptr getCombinedClouds();
-
     ros::Publisher combined_cloud_publisher;
 
   private:
@@ -45,11 +44,6 @@ namespace cloud_processor
     int num_clouds_to_avg_;
     pcl::PointCloud<pcl::PointXYZ>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
     std::vector<std::string> frame_names_;
-
-    // TODO: arg for frequency
-    ros::Time last_combined_pub_time_;
-    double combined_pub_freq_=10.0;
-
   };
 }
 

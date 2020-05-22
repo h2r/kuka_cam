@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 
   int max_deque_size = 5;
   int num_clouds_to_avg = 1;
+  double combined_pub_freq = 10.0;
 
   cloud_processor::CloudProcessor cp(max_deque_size, num_clouds_to_avg);
 
@@ -35,6 +36,7 @@ int main(int argc, char **argv)
 
   // cp.combined_cloud_publisher = nh.advertise<sensor_msgs::PointCloud2>("/cloud_stitched", 1);
   cp.combined_cloud_publisher = nh.advertise<pcl::PointCloud<pcl::PointXYZ>>("/cloud_stitched", 1);
+  ros::Timer timer_pub = nh.createTimer(ros::Duration( 1.0 / combined_pub_freq) , &cloud_processor::CloudProcessor::publishCombined, &cp);
 
   ros::spin();
   return 0;
