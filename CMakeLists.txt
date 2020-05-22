@@ -7,7 +7,7 @@ project(kuka_cam)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs message_filters tf)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs message_filters tf tf_conversions)
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
 find_package(VTK REQUIRED)
@@ -18,7 +18,7 @@ find_package(VTK REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES kuka_cam
-  DEPENDS system_lib tf
+  DEPENDS system_lib tf tf_conversions
 )
 
 ###########
