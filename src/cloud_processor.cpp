@@ -108,7 +108,15 @@ namespace cloud_processor
   void CloudProcessor::filterWorkspace(){
 
   }
-  void CloudProcessor::filterTable(){
+
+  void CloudProcessor::filterTable(pcl::PointCloud<pcl::PointXYZ>::Ptr &output)
+  {
+    pcl::PassThrough<pcl::PointXYZ> pass;
+    pass.setInputCloud (combined_cloud_);
+    pass.setFilterFieldName ("z");
+    pass.setFilterLimits (0.01, 2.0);
+    //pass.setFilterLimitsNegative (true);
+    pass.filter (*output);
 
   }
   void CloudProcessor::downsample(){
@@ -125,8 +133,11 @@ namespace cloud_processor
     // TODO: is this the right place for this?
     combineClouds();
 
+    pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
+    filterTable(filtered_cloud);
+
     sensor_msgs::PointCloud2Ptr object_msg = boost::shared_ptr<sensor_msgs::PointCloud2>(new sensor_msgs::PointCloud2);
-    pcl::toROSMsg(*combined_cloud_, *object_msg);
+    pcl::toROSMsg(*filtered_cloud, *object_msg);
     object_msg->header.frame_id = "world";
     object_msg->header.stamp = ros::Time::now();
     combined_cloud_publisher.publish(object_msg);

@@ -15,6 +15,7 @@
 #include <pcl/point_types.h>
 #include <pcl/common/transforms.h>
 #include <pcl_ros/point_cloud.h>
+#include <pcl/filters/passthrough.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -29,7 +30,7 @@ namespace cloud_processor
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
     void combineClouds();
     void filterWorkspace();
-    void filterTable();
+    void filterTable(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
     void downsample();
     void estimateNormals();
     void filterOutliers();
