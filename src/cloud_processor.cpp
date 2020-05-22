@@ -125,9 +125,12 @@ namespace cloud_processor
     // TODO: is this the right place for this?
     combineClouds();
 
-    combined_cloud_->header.frame_id = "world";
-    combined_cloud_->header.stamp = ros::Time::now().toSec();
-    combined_cloud_publisher.publish(combined_cloud_);
+    sensor_msgs::PointCloud2Ptr object_msg = boost::shared_ptr<sensor_msgs::PointCloud2>(new sensor_msgs::PointCloud2);
+    pcl::toROSMsg(*combined_cloud_, *object_msg);
+    object_msg->header.frame_id = "world";
+    object_msg->header.stamp = ros::Time::now();
+    combined_cloud_publisher.publish(object_msg);
+
   }
   pcl::PointCloud<pcl::PointXYZ>::Ptr CloudProcessor::getCombinedClouds(){
     return combined_cloud_;
