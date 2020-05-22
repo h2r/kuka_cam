@@ -125,8 +125,8 @@ namespace cloud_processor
     // TODO: is this the right place for this?
     combineClouds();
 
-    combined_cloud_->header.frame_id="world";
-    combined_cloud_->header.stamp= last_combined_pub_time_.toSec();
+    combined_cloud_->header.frame_id = "world";
+    combined_cloud_->header.stamp = ros::Time::now().toSec();
     combined_cloud_publisher.publish(combined_cloud_);
   }
   pcl::PointCloud<pcl::PointXYZ>::Ptr CloudProcessor::getCombinedClouds(){
