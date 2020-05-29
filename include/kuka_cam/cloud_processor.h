@@ -22,30 +22,37 @@
 
 #include <Eigen/Dense>
 
+typedef pcl::PointXYZ InputPointType;
+typedef pcl::PointNormal OutputPointType;
+
 namespace cloud_processor
 {
+  // template<class OutputPointType>
   class CloudProcessor
   {
   public:
     CloudProcessor(int max_deque_size, int num_clouds_to_avg);
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
-    void combineCloudsWithNormals();
+
+    // void combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
+    void combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
+
     void filterWorkspace();
-    void filterTable(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
+    void filterTable(pcl::PointCloud<OutputPointType>::Ptr &output);
     void downsample();
     void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr &input,
                          pcl::PointCloud<pcl::PointNormal>::Ptr &output);
     void filterOutliers();
     void publishCombined(const ros::TimerEvent& event);
-    pcl::PointCloud<pcl::PointNormal>::Ptr getCombinedClouds();
+    pcl::PointCloud<OutputPointType>::Ptr getCombinedClouds();
     ros::Publisher combined_cloud_publisher;
 
   private:
-    std::map<std::string, std::deque<std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, double> > > cloud_map_;
+    std::map<std::string, std::deque<std::pair<pcl::PointCloud<InputPointType>::Ptr, double> > > cloud_map_;
     std::map<std::string, Eigen::Affine3d> tf_map_;
     int max_deque_size_;
     int num_clouds_to_avg_;
-    pcl::PointCloud<pcl::PointNormal>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<pcl::PointNormal> >(new pcl::PointCloud<pcl::PointNormal>);
+    pcl::PointCloud<OutputPointType>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<OutputPointType> >(new pcl::PointCloud<OutputPointType>);
     std::vector<std::string> frame_names_;
   };
 }
