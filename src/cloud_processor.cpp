@@ -170,9 +170,6 @@ namespace cloud_processor
     filterTable(filtered_cloud);
     // filtered_cloud=combined_cloud_;
 
-
-    ROS_INFO_STREAM("size of filtered_cloud " << filtered_cloud->size());
-
     sensor_msgs::PointCloud2Ptr object_msg = boost::shared_ptr<sensor_msgs::PointCloud2>(new sensor_msgs::PointCloud2);
     pcl::toROSMsg(*filtered_cloud, *object_msg);
     object_msg->header.frame_id = "world";
