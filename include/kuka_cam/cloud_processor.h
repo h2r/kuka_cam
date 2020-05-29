@@ -16,6 +16,7 @@
 #include <pcl/common/transforms.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/filters/passthrough.h>
+#include <pcl/features/normal_3d.h>
 
 #include <boost/shared_ptr.hpp>
 
@@ -28,14 +29,15 @@ namespace cloud_processor
   public:
     CloudProcessor(int max_deque_size, int num_clouds_to_avg);
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
-    void combineClouds();
+    void combineCloudsWithNormals();
     void filterWorkspace();
-    void filterTable(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
+    void filterTable(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
     void downsample();
-    void estimateNormals();
+    void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr &input,
+                         pcl::PointCloud<pcl::PointNormal>::Ptr &output);
     void filterOutliers();
     void publishCombined(const ros::TimerEvent& event);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr getCombinedClouds();
+    pcl::PointCloud<pcl::PointNormal>::Ptr getCombinedClouds();
     ros::Publisher combined_cloud_publisher;
 
   private:
@@ -43,7 +45,7 @@ namespace cloud_processor
     std::map<std::string, Eigen::Affine3d> tf_map_;
     int max_deque_size_;
     int num_clouds_to_avg_;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointNormal>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<pcl::PointNormal> >(new pcl::PointCloud<pcl::PointNormal>);
     std::vector<std::string> frame_names_;
   };
 }
