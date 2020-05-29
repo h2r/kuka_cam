@@ -23,7 +23,8 @@
 #include <Eigen/Dense>
 
 typedef pcl::PointXYZ InputPointType;
-typedef pcl::PointNormal OutputPointType;
+typedef pcl::PointXYZ OutputPointType;
+// typedef pcl::PointNormal OutputPointType;
 
 namespace cloud_processor
 {
@@ -34,8 +35,8 @@ namespace cloud_processor
     CloudProcessor(int max_deque_size, int num_clouds_to_avg);
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
 
-    // void combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
-    void combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
+    void combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
+    // void combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
 
     void filterWorkspace();
     void filterTable(pcl::PointCloud<OutputPointType>::Ptr &output);

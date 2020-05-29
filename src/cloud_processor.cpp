@@ -84,24 +84,7 @@ namespace cloud_processor
 
   }
 
-  // void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output){
-  //
-  //   for (int i = 0; i < tf_map_.size(); i++)
-  //   {
-  //     // TODO: make sure this cloud isn't stale.
-  //     if (cloud_map_[frame_names_[i]].size() > 0)
-  //     {
-  //       // TODO: averaging.
-  //       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
-  //       pcl::transformPointCloud( *cloud_map_[frame_names_[i]].back().first,
-  //                                 *cloud_out,
-  //                                 tf_map_[frame_names_[i]]);
-  //       *combined_cloud_+=*cloud_out;
-  //     }
-  //   }
-  // }
-
-  void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output){
+  void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output){
 
     for (int i = 0; i < tf_map_.size(); i++)
     {
@@ -109,28 +92,45 @@ namespace cloud_processor
       if (cloud_map_[frame_names_[i]].size() > 0)
       {
         // TODO: averaging.
-        pcl::PointCloud<pcl::PointNormal>::Ptr cloud_ne
-                                        (new pcl::PointCloud<pcl::PointNormal>);
-        estimateNormals(cloud_map_[frame_names_[i]].back().first, cloud_ne);
-
-        pcl::PointCloud<pcl::PointNormal>::Ptr cloud_transformed
-                                        (new pcl::PointCloud<pcl::PointNormal>);
-        pcl::transformPointCloudWithNormals( *cloud_ne,
-                                             *cloud_transformed,
-                                              tf_map_[frame_names_[i]]);
-        *combined_cloud_+=*cloud_transformed;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
+        pcl::transformPointCloud( *cloud_map_[frame_names_[i]].back().first,
+                                  *cloud_out,
+                                  tf_map_[frame_names_[i]]);
+        *combined_cloud_+=*cloud_out;
       }
     }
-
-
   }
+
+  // void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output){
+  //
+  //   for (int i = 0; i < tf_map_.size(); i++)
+  //   {
+  //     // TODO: make sure this cloud isn't stale.
+  //     if (cloud_map_[frame_names_[i]].size() > 0)
+  //     {
+  //       // TODO: averaging.
+  //       pcl::PointCloud<pcl::PointNormal>::Ptr cloud_ne
+  //                                       (new pcl::PointCloud<pcl::PointNormal>);
+  //       estimateNormals(cloud_map_[frame_names_[i]].back().first, cloud_ne);
+  //
+  //       pcl::PointCloud<pcl::PointNormal>::Ptr cloud_transformed
+  //                                       (new pcl::PointCloud<pcl::PointNormal>);
+  //       pcl::transformPointCloudWithNormals( *cloud_ne,
+  //                                            *cloud_transformed,
+  //                                             tf_map_[frame_names_[i]]);
+  //       *combined_cloud_+=*cloud_transformed;
+  //     }
+  //   }
+  //
+  //
+  // }
   void CloudProcessor::filterWorkspace(){
 
   }
 
   void CloudProcessor::filterTable(pcl::PointCloud<OutputPointType>::Ptr &output)
   {
-    pcl::PassThrough<pcl::PointNormal> pass;
+    pcl::PassThrough<OutputPointType> pass;
     pass.setInputCloud (combined_cloud_);
     pass.setFilterFieldName ("z");
     pass.setFilterLimits (0.01, 2.0);
@@ -168,7 +168,7 @@ namespace cloud_processor
     combined_cloud_.reset(new pcl::PointCloud<OutputPointType>);
     combineClouds(combined_cloud_);
 
-    pcl::PointCloud<OutputPointType>::Ptr filtered_cloud = boost::shared_ptr<pcl::PointCloud<pcl::PointNormal> >(new pcl::PointCloud<OutputPointType>);
+    pcl::PointCloud<OutputPointType>::Ptr filtered_cloud = boost::shared_ptr<pcl::PointCloud<OutputPointType> >(new pcl::PointCloud<OutputPointType>);
     filterTable(filtered_cloud);
 
     sensor_msgs::PointCloud2Ptr object_msg = boost::shared_ptr<sensor_msgs::PointCloud2>(new sensor_msgs::PointCloud2);
