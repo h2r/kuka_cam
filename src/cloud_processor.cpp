@@ -2,7 +2,8 @@
 
 namespace cloud_processor
 {
-  CloudProcessor::CloudProcessor(int max_deque_size,
+ template <typename OutputPointType>
+  CloudProcessor<OutputPointType>::CloudProcessor(int max_deque_size,
                                  int num_clouds_to_avg) : combined_cloud_publisher() {
 
     max_deque_size_ = max_deque_size;
@@ -56,7 +57,8 @@ namespace cloud_processor
     }
 
   }
-  void CloudProcessor::addCloud(const sensor_msgs::PointCloud2ConstPtr& msg)
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::addCloud(const sensor_msgs::PointCloud2ConstPtr& msg)
   {
 
     std::string camera_name = msg->header.frame_id;
@@ -84,24 +86,26 @@ namespace cloud_processor
 
   }
 
-  // void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output)
-  // {
-  //   for (int i = 0; i < tf_map_.size(); i++)
-  //   {
-  //     // TODO: make sure this cloud isn't stale.
-  //     if (cloud_map_[frame_names_[i]].size() > 0)
-  //     {
-  //       // TODO: averaging.
-  //       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
-  //       pcl::transformPointCloud( *cloud_map_[frame_names_[i]].back().first,
-  //                                 *cloud_out,
-  //                                 tf_map_[frame_names_[i]]);
-  //       *combined_cloud_+=*cloud_out;
-  //     }
-  //   }
-  // }
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output)
+  {
+    for (int i = 0; i < tf_map_.size(); i++)
+    {
+      // TODO: make sure this cloud isn't stale.
+      if (cloud_map_[frame_names_[i]].size() > 0)
+      {
+        // TODO: averaging.
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZ>);
+        pcl::transformPointCloud( *cloud_map_[frame_names_[i]].back().first,
+                                  *cloud_out,
+                                  tf_map_[frame_names_[i]]);
+        *output+=*cloud_out;
+      }
+    }
+  }
 
-  void CloudProcessor::combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output)
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output)
   {
     for (int i = 0; i < tf_map_.size(); i++)
     {
@@ -118,15 +122,17 @@ namespace cloud_processor
         pcl::transformPointCloudWithNormals( *cloud_ne,
                                              *cloud_transformed,
                                               tf_map_[frame_names_[i]]);
-        *combined_cloud_+=*cloud_transformed;
+        *output+=*cloud_transformed;
       }
     }
   }
-  void CloudProcessor::filterWorkspace(){
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::filterWorkspace(){
 
   }
 
-  void CloudProcessor::filterTable(pcl::PointCloud<OutputPointType>::Ptr &output)
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::filterTable(typename pcl::PointCloud<OutputPointType>::Ptr &output)
   {
     pcl::PassThrough<OutputPointType> pass;
     pass.setInputCloud (combined_cloud_);
@@ -136,11 +142,13 @@ namespace cloud_processor
     pass.filter (*output);
 
   }
-  void CloudProcessor::downsample(){
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::downsample(){
 
   }
 
-  void CloudProcessor::estimateNormals( pcl::PointCloud<InputPointType>::Ptr &input,
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::estimateNormals( pcl::PointCloud<InputPointType>::Ptr &input,
                                         pcl::PointCloud<pcl::PointNormal>::Ptr &output)
   {
     pcl::PointCloud<pcl::Normal>::Ptr normals =
@@ -155,18 +163,20 @@ namespace cloud_processor
     ne.compute (*normals);
     pcl::concatenateFields (*input, *normals, *output);
   }
-  void CloudProcessor::filterOutliers(){
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::filterOutliers(){
 
   }
-  void CloudProcessor::publishCombined(const ros::TimerEvent& event){
+ template <typename OutputPointType>
+ void CloudProcessor<OutputPointType>::publishCombined(const ros::TimerEvent& event){
 
     // TODO: is this the right place for this?
     // // combined_cloud_->resize(0);
     combined_cloud_->clear();
-    combined_cloud_.reset(new pcl::PointCloud<OutputPointType>);
+    combined_cloud_.reset(new typename pcl::PointCloud<OutputPointType>);
     combineClouds(combined_cloud_);
 
-    pcl::PointCloud<OutputPointType>::Ptr filtered_cloud = boost::shared_ptr<pcl::PointCloud<OutputPointType> >(new pcl::PointCloud<OutputPointType>);
+    typename pcl::PointCloud<OutputPointType>::Ptr filtered_cloud = boost::shared_ptr<pcl::PointCloud<OutputPointType> >(new typename pcl::PointCloud<OutputPointType>);
     filterTable(filtered_cloud);
     // filtered_cloud=combined_cloud_;
 
@@ -175,9 +185,14 @@ namespace cloud_processor
     object_msg->header.frame_id = "world";
     object_msg->header.stamp = ros::Time::now();
     combined_cloud_publisher.publish(object_msg);
-
   }
-  pcl::PointCloud<OutputPointType>::Ptr CloudProcessor::getCombinedClouds(){
+
+  template <typename OutputPointType>
+  typename pcl::PointCloud<OutputPointType>::Ptr CloudProcessor<OutputPointType>::getCombinedClouds()
+  {
     return combined_cloud_;
   }
+
+ template class CloudProcessor<pcl::PointXYZ>;
+ template class CloudProcessor<pcl::PointNormal>;
 }

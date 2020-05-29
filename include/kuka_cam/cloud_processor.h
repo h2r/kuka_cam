@@ -24,28 +24,28 @@
 
 typedef pcl::PointXYZ InputPointType;
 // typedef pcl::PointXYZ OutputPointType;
-typedef pcl::PointNormal OutputPointType;
+// typedef pcl::PointNormal OutputPointType;
 
 namespace cloud_processor
 {
-  // template<class OutputPointType>
+  template<typename OutputPointType>
   class CloudProcessor
   {
   public:
     CloudProcessor(int max_deque_size, int num_clouds_to_avg);
     void addCloud(const sensor_msgs::PointCloud2ConstPtr& msg);
 
-    // void combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
+    void combineClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &output);
     void combineClouds(pcl::PointCloud<pcl::PointNormal>::Ptr &output);
 
     void filterWorkspace();
-    void filterTable(pcl::PointCloud<OutputPointType>::Ptr &output);
+    void filterTable(typename pcl::PointCloud<OutputPointType>::Ptr &output);
     void downsample();
     void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr &input,
                          pcl::PointCloud<pcl::PointNormal>::Ptr &output);
     void filterOutliers();
     void publishCombined(const ros::TimerEvent& event);
-    pcl::PointCloud<OutputPointType>::Ptr getCombinedClouds();
+    typename pcl::PointCloud<OutputPointType>::Ptr getCombinedClouds();
     ros::Publisher combined_cloud_publisher;
 
   private:
@@ -53,7 +53,7 @@ namespace cloud_processor
     std::map<std::string, Eigen::Affine3d> tf_map_;
     int max_deque_size_;
     int num_clouds_to_avg_;
-    pcl::PointCloud<OutputPointType>::Ptr combined_cloud_ = boost::shared_ptr<pcl::PointCloud<OutputPointType> >(new pcl::PointCloud<OutputPointType>);
+    typename pcl::PointCloud<OutputPointType>::Ptr combined_cloud_ = boost::shared_ptr<typename pcl::PointCloud<OutputPointType> >(new typename pcl::PointCloud<OutputPointType>);
     std::vector<std::string> frame_names_;
   };
 }
