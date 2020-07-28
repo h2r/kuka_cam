@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <launch>
     <include file="$(find openni2_launch)/launch/openni2.launch"/>
-    <arg name="cam_num" default="3"/>
+    <arg name="cam_name" default="structure"/>
     <!--static_transform_publisher x y z qx qy qz qw frame_id child_frame_id period_in_ms-->
-    <node pkg="tf" type="static_transform_publisher" name="tf_pub_cam_$(arg cam_num)"
+    <node pkg="tf" type="static_transform_publisher" name="tf_pub_cam_$(arg cam_name)"
         args= "$(eval
-            env('cam_' + str(cam_num) + '_x_pos') + ' ' +
-            env('cam_' + str(cam_num) + '_y_pos') + ' ' +
-            env('cam_' + str(cam_num) + '_z_pos') + ' ' +
-            env('cam_' + str(cam_num) + '_x_rot') + ' ' +
-            env('cam_' + str(cam_num) + '_y_rot') + ' ' +
-            env('cam_' + str(cam_num) + '_z_rot') + ' ' +
-            env('cam_' + str(cam_num) + '_w_rot') + ' ' +
-            '/world /camera_link 100'
+            env('cam_' + str(cam_name) + '_x_pos') + ' ' +
+            env('cam_' + str(cam_name) + '_y_pos') + ' ' +
+            env('cam_' + str(cam_name) + '_z_pos') + ' ' +
+            env('cam_' + str(cam_name) + '_x_rot') + ' ' +
+            env('cam_' + str(cam_name) + '_y_rot') + ' ' +
+            env('cam_' + str(cam_name) + '_z_rot') + ' ' +
+            env('cam_' + str(cam_name) + '_w_rot') + ' ' +
+            '/iiwa_link_ee /camera_link 100'
         )"
     />
 </launch>
